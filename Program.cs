@@ -19,6 +19,8 @@ namespace Santarsieri.Andrea._4H.SaveRecord
             //Rileggere il file binario in una list<Comune>
             c.Load();
             Console.WriteLine($"Ho letto {c.Count} righe dal file binario");
+            int index = 100;
+            Console.WriteLine($"Ecco la riga {index}: {c[index]}");
 
         }
     }

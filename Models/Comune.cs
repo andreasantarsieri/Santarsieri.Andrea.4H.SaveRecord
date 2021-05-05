@@ -1,3 +1,4 @@
+using System.Linq;
 using System.IO.Enumeration;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -24,9 +25,14 @@ namespace Santarsieri.Andrea._4H.SaveRecord.Models
             NomeComune = colonne[1];
             
             
-
+            
+        }
+        public override string ToString()
+        {
+            return $"{ID}, {CodiceCastale}, {NomeComune}";
         }
     }
+
 
     public class Comuni : List<Comune> // Comuni è una List<Comune>
     {
@@ -103,5 +109,28 @@ namespace Santarsieri.Andrea._4H.SaveRecord.Models
             // Come si fa ad accorgersi della fine del file...??
             
         }
+
+        public Comune RicercaComune(int index)
+        {
+            string fn = NomeFile.Split('.')[0] + ".bin";
+            return RicercaComune(index, fn);
+        }
+
+        // Equivalente del override dell'indexer
+        public Comune RicercaComune(int index, string fileName)
+        {
+            FileStream fin = new FileStream(fileName, FileMode.Open);
+            BinaryReader reader = new BinaryReader(fin);
+
+            fin.Seek((index - 1) * 32, SeekOrigin.Begin);
+            Comune c = new Comune();
+            c.ID = reader.ReadInt32();
+            c.CodiceCastale = reader.ReadString();
+            c.NomeComune = reader.ReadString();
+
+            return c;
+        }
+
     }
+
 }
